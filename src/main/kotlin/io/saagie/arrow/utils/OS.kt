@@ -9,7 +9,7 @@ class OS {
         @Throws(ProgramNotFound::class)
         fun searchBinary(program: String): String {
             print("\uD83D\uDD0D Looking for $program ...")
-            Thread.sleep(2000)
+            Thread.sleep(1300)
             if (Random.nextBoolean()) {
                 println("Not found \uD83D\uDCA5")
                 throw ProgramNotFound(program)
@@ -22,7 +22,7 @@ class OS {
 
         fun installBinary(program: String): String {
             print("\uD83D\uDCBB Install $program ...")
-            Thread.sleep(2000)
+            Thread.sleep(1300)
 
             if (Random.nextBoolean()) {
                 println("Failed \uD83D\uDCA5")
@@ -35,7 +35,7 @@ class OS {
 
         fun executeCommandLine(commandLine: String) {
             println("▶️ $commandLine")
-            Thread.sleep(1500)
+            Thread.sleep(500)
             println("")
             println(
                 """

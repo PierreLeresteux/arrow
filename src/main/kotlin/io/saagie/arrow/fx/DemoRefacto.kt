@@ -29,14 +29,12 @@ fun main() {
         getPathForKubectl()
             .handleErrorWith {
                 downloadAndInstallKubectl()
-            }.map {
-                executeKubectlCmd(it, context)
             }
     ) {
         this.unsafeRunAsync() {
             it.fold(
                 ifLeft = { println("ERROR : $it") },
-                ifRight = { Unit }
+                ifRight = { kubeCmdLine -> executeKubectlCmd(kubeCmdLine, io.saagie.arrow.either.context) }
             )
         }
     }
