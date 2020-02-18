@@ -21,7 +21,10 @@ object DependencyVersions {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("io.arrow-kt:arrow-core:$arrowVersion")
+    implementation("io.arrow-kt:arrow-fx:$arrowVersion")
     implementation("io.arrow-kt:arrow-syntax:$arrowVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.3")
+    implementation(kotlin("script-runtime"))
 }
 
 tasks {
