@@ -8,19 +8,23 @@ import io.saagie.arrow.utils.Error.ProgramNotFound
 import io.saagie.arrow.utils.OS
 import kotlinx.coroutines.runBlocking
 
-suspend fun getPathForKubectl(): Either<Error, String> =
+fun getPathForKubectl(): Either<Error, String> = runBlocking {
     Either.catch {
         OS.searchBinary("kubectl")
     }.mapLeft { ProgramNotFound("kubectl") }
+}
 
-suspend fun downloadAndInstallKubectl(): Either<Error, String> =
+fun downloadAndInstallKubectl(): Either<Error, String> = runBlocking {
     Either.catch {
         OS.installBinary("kubectl")
     }.mapLeft { InstallFailed("kubectl") }
+}
 
-suspend fun executeKubectlCmd(kubectlPath: String, context: Map<String, String>) {
-    val commandLine = "$kubectlPath get pod ${context.get("podName")} -n ${context.get("namespace")}"
-    OS.executeCommandLine(commandLine)
+fun executeKubectlCmd(kubectlPath: String, context: Map<String, String>) {
+    runBlocking {
+        val commandLine = "$kubectlPath get pod ${context.get("podName")} -n ${context.get("namespace")}"
+        OS.executeCommandLine(commandLine)
+    }
 }
 
 val context = mapOf<String, String>(
@@ -29,19 +33,11 @@ val context = mapOf<String, String>(
 )
 
 fun main() {
-    runBlocking {
-        getPathForKubectl()
-            .handleErrorWith {
-                runBlocking {
-                    downloadAndInstallKubectl()
-                }
-            }
-            .fold({
-                println("ERROR : $it")
-            }, { kubectlPath ->
-                executeKubectlCmd(kubectlPath, context)
-            })
-
-    }
+    getPathForKubectl()
+        .handleErrorWith { downloadAndInstallKubectl() }
+        .fold(
+            { println("ERROR : $it") },
+            { kubectlPath -> executeKubectlCmd(kubectlPath, context) }
+        )
 }
 
