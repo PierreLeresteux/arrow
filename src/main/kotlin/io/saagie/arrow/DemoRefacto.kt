@@ -6,7 +6,8 @@ import io.saagie.arrow.utils.OS
 fun getPathForKubectl(): String =
     OS.searchBinary("kubectl")
 
-fun downloadAndInstallKubectl(): String = OS.installBinary("kubectl")
+fun downloadAndInstallKubectl(): String =
+    OS.installBinary("kubectl")
 
 fun executeKubectlCmd(kubectlPath: String, context: Map<String, String>) {
     val commandLine = "$kubectlPath get pod ${context.get("podName")} -n ${context.get("namespace")}"

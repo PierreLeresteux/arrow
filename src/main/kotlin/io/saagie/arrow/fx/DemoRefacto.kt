@@ -25,18 +25,13 @@ val context = mapOf<String, String>(
 )
 
 fun main() {
-    with(
-        getPathForKubectl()
-            .handleErrorWith {
-                downloadAndInstallKubectl()
-            }
-    ) {
-        this.unsafeRunAsync() {
+    getPathForKubectl()
+        .handleErrorWith { downloadAndInstallKubectl() }
+        .unsafeRunAsync() {
             it.fold(
-                ifLeft = { println("ERROR : $it") },
-                ifRight = { kubeCmdLine -> executeKubectlCmd(kubeCmdLine, io.saagie.arrow.either.context) }
+                ifLeft = { println("ERROR $it") },
+                ifRight = { kubePath -> executeKubectlCmd(kubePath, io.saagie.arrow.context) }
             )
         }
-    }
 }
 
