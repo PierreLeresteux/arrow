@@ -37,7 +37,7 @@ fun main() {
         .handleErrorWith { downloadAndInstallKubectl() }
         .fold(
             { println("ERROR : $it") },
-            { kubeCmdLine -> executeKubectlCmd(kubeCmdLine, context) }
+            { kubePath -> executeKubectlCmd(kubePath, context) }
         )
 }
 
