@@ -1,7 +1,5 @@
 import arrow.core.extensions.option.apply.product
-import arrow.core.getOrElse
 import arrow.core.orElse
-import arrow.core.some
 import arrow.core.toOption
 import java.util.*
 
@@ -34,6 +32,7 @@ myVal.toOption().let {
 
 myVal.toOption()
     .product(myBackupVal.toOption())
-    .map { (first,second) ->
-        println("$first  $second")
+    .map {
+
     }
+
